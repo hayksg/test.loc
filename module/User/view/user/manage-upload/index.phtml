@@ -1,0 +1,76 @@
+<?php
+$headTitle = 'Manage Upload';
+$this->headTitle($headTitle);
+?>
+<section class="my-uploads">
+    <h3>My uploads</h3>
+    <br>
+    <div><a href="<?= $this->url('user/upload', array('action' => 'add')) ?>" class="btn btn-info">Add Upload</a></div>
+    <?php if (count($myUploads) == 0) : ?>
+    <br>
+    <h5 class="font-color-grey"><strong>List is empty</strong></h5>
+    <?php else : ?>
+    <br>
+    <?php if ($deleteUpload) : ?>
+    <p class="font-color-red"><?= $this->escapeHtml($deleteUpload) ?></p>
+    <?php endif; ?>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>File description</th>               
+                <th>Management</th>
+            </tr>
+            <?php foreach ($myUploads as $upload) : ?>
+            <tr>                
+                <td><?= $this->escapeHtml($upload->label) ?></td>
+                <td>
+                    <a href="<?= $this->url('user/upload', array('action' => 'edit', 'id' => (int)$upload->id)) ?>">
+                        <i class="fa fa-edit"></i> Edit
+                    </a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                    <form action="<?= $this->url('user/upload', array('action' => 'delete', 'id' => (int)$upload->id)) ?>"
+                          method="post"
+                          class="app-delete-form"
+                    >
+                        <button type="submit" name="delete" onclick="return confirm('Are you sure?')">
+                            <i class="fa fa-trash-o"></i> Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+    <?php endif; ?>
+</section>
+<br>
+<br>
+<br>
+<hr>
+<section class="shared-uploads">
+    <h3>Shared uploads</h3>
+    <?php if (count($sharedList) == 0) : ?>
+    <h5 class="font-color-grey"><strong>List is empty</strong></h5>
+    <?php else : ?>
+    <br>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>Description</th>               
+                <th>Download</th>
+                <th>Owner</th>
+            </tr>
+            <?php foreach ($sharedList as $uploadId => $upload) : ?>
+            <tr>                
+                <td><?= $this->escapeHtml($upload['label']) ?></td>
+                <td>
+                    <a href="<?= $this->url('user/upload', array('action' => 'download', 'id' => (int)$uploadId)) ?>">
+                        Download
+                    </a>
+                </td>
+                <td><?= $this->escapeHtml($upload['owner']) ?></td>               
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+    <?php endif; ?>
+</section>

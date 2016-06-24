@@ -1,0 +1,123 @@
+<?php
+$headTitle = 'Edit Upload';
+$this->headtitle($headTitle);
+?>
+<section class="shared-uploads">
+    <h3><?= $this->escapeHtml($headTitle) ?></h3>
+    <br>
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-8">
+            <?php
+            $form->setAttribute('action', $this->url('user/upload', array(
+                'action' => 'edit',          
+                'id'     => $this->id,          
+            )));
+            
+            $form->prepare();
+            
+            echo $this->form()->openTag($form);      
+            echo $this->formHidden($form->get('id'));      
+            ?>
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <?= $this->formLabel($form->get('label')) ?>
+                </div>
+                <div class="col-sm-9">
+                    <?= $this->formElement($form->get('label')) ?>
+                    <?= $this->formElementErrors($form->get('label')) ?>
+                </div>
+            </div>           
+            <div class="form-group">           
+                <div class="col-sm-12 col-sm-offset-3">
+                    <?= $this->formElement($form->get('submit')) ?>               
+                </div>
+            </div>
+            <?= $this->form()->closeTag() ?>
+        </div>
+    </div>
+</section>
+<br>
+<br>
+<br>
+<hr>
+<section class="add-sharing">
+    <h3>Add Sharing</h3>
+    <br>
+    <div class="row">
+        <div class="col-lg-6 col-md-8 col-sm-10 col-xs-8">
+            <?php
+            $uploadAddSharingForm->setAttribute('action', $this->url('user/upload', array(
+                'action' => 'addSharing',                                   
+            )));
+            
+            $uploadAddSharingForm->prepare();
+            
+            echo $this->form()->openTag($uploadAddSharingForm);      
+            echo $this->formHidden($uploadAddSharingForm->get('uploadId'));      
+            ?>
+            <div class="form-group">
+                <div class="col-sm-3">
+                    <?= $this->formLabel($uploadAddSharingForm->get('userId')) ?>
+                </div>
+                <div class="col-sm-9">
+                    <?= $this->formElement($uploadAddSharingForm->get('userId')) ?>
+                    <?= $this->formElementErrors($uploadAddSharingForm->get('userId')) ?>
+                    <?php if ($uploadSharedAlready) : ?>
+                        <ul>
+                            <li><?= $this->escapeHtml($uploadSharedAlready) ?></li>
+                        </ul>
+                    <?php endif; ?>
+                </div>
+            </div>           
+            <div class="form-group">           
+                <div class="col-sm-12 col-sm-offset-3">
+                    <?= $this->formElement($uploadAddSharingForm->get('submit')) ?>               
+                </div>
+            </div>
+            <?= $this->form()->closeTag() ?>
+        </div>
+    </div>
+</section>
+<br>
+<br>
+<br>
+<hr>
+<section class="">
+    <h3>Members who have access to this upload</h3>
+    <br>
+    <?php if (count($sharedData) == 0) : ?>
+    <h5 class="font-color-grey"><strong>List is empty</strong></h5>
+    <?php else : ?>
+    <br>
+    <?php if ($deleteSharing) : ?>
+    <p class="font-color-red"><?= $this->escapeHtml($deleteSharing) ?></p>
+    <?php endif; ?>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <tr>
+                <th>User</th>               
+                <th>Action</th>              
+            </tr>
+            <?php foreach ($sharedData as $uploadId => $user) : ?>
+            <tr>                
+                <td><?= $this->escapeHtml($user) ?></td>
+                <td>                    
+                    <form action="<?= $this->url('user/upload', array('action' => 'deleteSharing', 'id' => (int)$uploadId)) ?>"
+                          method="post"
+                          class="app-delete-form"
+                    >
+                        <button type="submit" name="delete" onclick="return confirm('Are you sure?')">
+                            <i class="fa fa-trash-o"></i> Delete
+                        </button>
+                    </form>
+                </td>
+                              
+            </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
+    <?php endif; ?>
+</section>
+<br>
+<br>
+<br>

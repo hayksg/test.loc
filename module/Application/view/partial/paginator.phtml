@@ -1,0 +1,25 @@
+<?php if ($this->pageCount) : ?>
+    <div class="pagination-centered">
+        <ul class="pagination">
+            <?php if ($this->previous) : ?>
+                <li><a href="<?= $this->url($this->route, array('page' => $this->previous)) ?>">&Lt;</a></li>
+            <?php else : ?>
+                <li class="disabled"><a href="#" onclick="return false">&Lt;</a></li>
+            <?php endif; ?>
+            
+            <?php foreach ($pagesInRange as $page) : ?>
+                <?php if ($page !== $this->current) : ?>
+                    <li><a href="<?= $this->url($this->route, array('page' => $page)) ?>"><?= $page ?></a></li>
+                <?php else : ?>
+                    <li class="active"><a href="#" onclick="return false"><?= $page ?></a></li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+            
+            <?php if ($this->next) : ?>
+                <li><a href="<?= $this->url($this->route, array('page' => $this->next)) ?>">&Gt;</a></li>
+            <?php else : ?>
+                <li class="disabled"><a href="#" onclick="return false">&Gt;</a></li>
+            <?php endif; ?>
+        </ul>
+    </div>
+<?php endif; ?>

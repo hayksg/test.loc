@@ -1,0 +1,9 @@
+﻿После инсталяции некоторые функции в Git корректно не работали(в частности связь с github.com). В консоле выводилась ошибка:
+error: error setting certificate verify locations:
+  CAfile: /bin/curl-ca-bundle.crt
+  CApath: none
+
+Для решения проблемы использовал следующую команду:
+git config --system http.sslcainfo /bin/curl-ca-bundle.crt
+
+И всё заработало!!!

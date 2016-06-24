@@ -1,0 +1,1 @@
+c:\>mysqldump -u root -p databaseName > E:/databaseName .sql

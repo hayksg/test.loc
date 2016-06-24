@@ -1,0 +1,52 @@
+<?php
+$headTitle = 'Manage User';
+$this->headtitle($headTitle);
+?>
+<h3>Users List</h3>
+<?php if (count($paginator) == 0) : ?>
+<h5 class="font-color-grey"><strong>List is empty</strong></h5>
+<?php else : ?>
+<br>
+<?php if ($deleteUser) : ?>
+<p class="font-color-red"><?= $this->escapeHtml($deleteUser) ?></p>
+<?php endif; ?>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover table-striped">
+        <tr>
+            <th>User Name</th>
+            <th>Email Address</th>
+            <th>Management</th>
+        </tr>
+        <?php foreach ($paginator as $user) : ?>
+        <tr>
+            <td><?= $this->escapeHtml($user->name) ?></td>
+            <td><?= $this->escapeHtml($user->email) ?></td>
+            <td>
+                <a href="<?= $this->url('user/manage', array('action' => 'edit', 'id' => (int)$user->id)) ?>">
+                    <i class="fa fa-edit"></i> Edit
+                </a>&nbsp;&nbsp;|&nbsp;&nbsp;
+                <form action="<?= $this->url('user/manage', array('action' => 'delete', 'id' => (int)$user->id)) ?>"
+                      method="post"
+                      class="app-delete-form"
+                >
+                    <button type="submit" name="delete" onclick="return confirm('Are you sure?')">
+                        <i class="fa fa-trash-o"></i> Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+</div>
+<?php endif; ?>
+<br>
+<br>
+<br>
+<?php 
+echo $this->paginationControl(
+         $paginator,
+         'sliding',
+         array('partial/paginator.phtml', 'user/manage'),
+         array('route' => 'user/manage')
+     );
+?>

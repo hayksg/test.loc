@@ -1,0 +1,65 @@
+<?php
+$headTitle = 'Register Page';
+$this->headTitle($headTitle);
+?>
+<h3><?= $this->escapeHtml($headTitle) ?></h3>
+<br>
+<?php if ($this->error) : ?>
+<p class="font-color-red">
+    There were one or more issue with your submission.<br>
+    Please, correct them as indicated below.
+</p>
+<?php endif; ?>
+<?php if ($messages) : ?>
+<br>
+<ul class="font-color-red">
+    <?php foreach ($messages as $message) : ?>
+    <li><?= $this->escapeHtml($message) ?></li>
+    <?php endforeach; ?>
+</ul>
+<?php endif; ?>
+<div class="container row">
+    <div class="col-lg-5 col-md-6 col-sm-7 col-xs-8">
+        <?php
+        $form->setAttribute('action', $this->url(null, array(
+            'controller' => 'register',
+            'action' => 'process',
+        )));
+        $form->prepare();
+        
+        echo $this->form()->openTag($form);
+        ?>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')) ?>
+            <div>
+                <?= $this->formElement($form->get('name')) ?>
+                <?= $this->formElementErrors($form->get('name')) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('email')) ?>
+            <div>
+                <?= $this->formElement($form->get('email')) ?>
+                <?= $this->formElementErrors($form->get('email')) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('password')) ?>
+            <div>
+                <?= $this->formElement($form->get('password')) ?>
+                <?= $this->formElementErrors($form->get('password')) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('confirmPassword')) ?>
+            <div>
+                <?= $this->formElement($form->get('confirmPassword')) ?>
+                <?= $this->formElementErrors($form->get('confirmPassword')) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->formElement($form->get('submit')) ?>           
+        </div>
+        <?= $this->form()->closeTag() ?>
+    </div>
+</div>
