@@ -1,0 +1,43 @@
+<?php echo $this->headLink()->prependStylesheet($this->basePath('css/font-awesome.min.css')) ?>
+<?php echo $this->headScript()->prependFile($this->basePath('js/jquery.min.js')) ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        hr { background: #ccc; border: none; height: 1px; }
+        .stamp { font-size: 13px; }
+        .chat-block { padding: 5px 0 200px; }
+    </style>
+    <script>
+        $(function(){
+            $(window).scrollTop($(document).height());
+
+            var reloadPage = function(){
+                $(window).get(0).location.reload();
+            }
+            setInterval(reloadPage, 5000);
+        });
+    </script>
+</head>
+<body>
+<section class="chat-block">
+<?php if (count($messagesList) == 0) : ?>
+<h5 class="font-color-grey"><strong>List is empty</strong></h5>
+<?php else : ?>
+    <?php foreach ($messagesList as $key => $message) : ?>
+        <div>
+            <div>
+                <strong><?= $this->escapeHtml($message['user']) ?></strong>
+                <div class="stamp"><i class="fa fa-calendar"></i>&nbsp;&nbsp;<?= $this->escapeHtml($message['stamp']) ?></div>
+            </div>
+            <br>
+            <div><?= $this->escapeHtml($message['message']) ?><div>
+        </div>
+        <?php if ($key < count($messagesList) - 1) : ?>
+            <hr>              
+        <?php endif; ?>      
+    <?php endforeach; ?>
+<?php endif; ?>
+</section>
+</body>
+</html>

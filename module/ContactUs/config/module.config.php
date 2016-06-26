@@ -8,10 +8,14 @@ return array(
     'router' => array(
         'routes' => array(
             'contact-us' => array(
-                'type'    => 'Literal',
+                'type'    => 'Segment',
                 'options' => array(
                     // Change this to something specific to your module
-                    'route'    => '/contact-us',
+                    'route'    => '/contact-us[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9-_]*',
+                        'id' => '[0-9]+',
+                    ),
                     'defaults' => array(
                         // Change this value to reflect the namespace in which
                         // the controllers for your module are found
@@ -45,6 +49,9 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'contact-us' => __DIR__ . '/../view',
+        ),
+        'template_map' => array(
+            'layout/contact' => __DIR__ . '/../view/layout/contact-layout.phtml',
         ),
     ),
 );

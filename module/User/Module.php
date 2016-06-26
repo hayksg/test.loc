@@ -96,6 +96,13 @@ class Module implements AutoloaderProviderInterface
                     return new TableGateway('upload_sharing', $dbAdapter);
                 },
                 
+                // Table chat_messages
+                'ChatMessagesTableGateway' => function($sm)
+                {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    return new TableGateway('chat_messages', $dbAdapter);
+                },
+                
                 // Forms
                 'RegisterForm' => function($sm)
                 {
@@ -169,6 +176,15 @@ class Module implements AutoloaderProviderInterface
                     $authService->setAdapter($authAdapter);
                     return $authService;
                 },
+                'LoggedInUser' => function ($sm)
+                {                   
+                    $authService = $sm->get('AuthService');
+                    $email = $authService->getStorage()->read();
+                
+                    $userTable = $sm->get('UserTable');
+                    $user = $userTable->getUserByColumn(array('email' => $email));
+                    return $user;
+                }
             ),
         );
     }
@@ -180,5 +196,21 @@ class Module implements AutoloaderProviderInterface
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        
+        $sharedEventManager = $eventManager->getSharedManager(); // Общий менеджер событий
+        $sharedEventManager->attach(
+            __NAMESPACE__, MvcEvent::EVENT_DISPATCH, function ($e) {
+                $controller = $e->getTarget(); // обслуживаемый контроллер
+                $controllerName = $controller->getEvent()->getRouteMatch()->getParam('controller');               
+                $controllersArray = array('User\Controller\Register',
+                                          'User\Controller\Login',
+                                          'User\Controller\ManageUser',
+                                          'User\Controller\ManageUpload',
+                                          'User\Controller\GroupChat');
+                if (in_array($controllerName, $controllersArray)) {
+                    $controller->layout('layout/user');
+                }
+            }
+        );
     }
 }

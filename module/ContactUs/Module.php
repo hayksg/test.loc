@@ -13,6 +13,9 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 
+use ContactUs\Form\ContactFilter;
+use ContactUs\Form\ContactForm;
+
 class Module implements AutoloaderProviderInterface
 {
     public function getAutoloaderConfig()
@@ -34,6 +37,28 @@ class Module implements AutoloaderProviderInterface
     {
         return include __DIR__ . '/config/module.config.php';
     }
+    
+    public function getServiceConfig()
+    {
+        return array(
+            'factories' => array(
+                
+                // Form
+                'ContactForm' => function($sm)
+                {
+                    $form = new ContactForm();
+                    $form->setInputFilter($sm->get('ContactFilter'));
+                    return $form;
+                },
+                
+                // Filter
+                'ContactFilter' => function($sm)
+                {
+                    return new ContactFilter();
+                },
+            ),
+        );
+    }
 
     public function onBootstrap(MvcEvent $e)
     {
@@ -42,5 +67,16 @@ class Module implements AutoloaderProviderInterface
         $eventManager        = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
+        
+        $sharedEventManager = $eventManager->getSharedManager();
+        $sharedEventManager->attach(
+            __NAMESPACE__, MvcEvent::EVENT_DISPATCH, function ($e) {
+                $controller = $e->getTarget();
+                $controllerName = $controller->getEvent()->getRouteMatch()->getParam('controller');
+                if (in_array($controllerName, array('ContactUs\Controller\Index'))) {
+                    $controller->layout('layout/contact');
+                }
+            }    
+        );
     }
 }

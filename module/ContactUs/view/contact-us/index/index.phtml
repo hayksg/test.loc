@@ -4,3 +4,61 @@ $this->headTitle($headTitle);
 ?>
 <h3><?= $this->escapeHtml($headTitle) ?></h3>
 <br>
+<div class="font-color-grey">
+    <div><i class="fa fa-phone"></i> <strong>+111 22 33 444</strong></div>
+    <div>To contact us please fill the following form</div>
+</div>
+<br>
+<?php if ($this->error) : ?>
+<p class="font-color-red">
+    There were one or more issue with your submission.<br>
+    Please, correct them as indicated below.
+</p>
+<?php endif; ?>
+<?php if ($sendMail) : ?>
+<p class="font-color-red"><?= $this->escapeHtml($sendMail) ?></p>
+<?php endif; ?>
+<div class="container row">
+    <div class="col-lg-6 col-md-7 col-sm-9 col-xs-9">
+        <?php 
+        $form->setAttribute('action', $this->url('contact-us', array(           
+            'action' => 'process',
+        )));
+        $form->prepare();
+        
+        echo $this->form()->openTag($form);
+        ?>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('name')) ?>
+            <div>
+                <?= $this->formElement($form->get('name')) ?>
+                <?= $this->formElementErrors($form->get('name')) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('email')) ?>
+            <div>
+                <?= $this->formElement($form->get('email')) ?>
+                <?= $this->formElementErrors($form->get('email')) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('subject')) ?>
+            <div>
+                <?= $this->formElement($form->get('subject')) ?>
+                <?= $this->formElementErrors($form->get('subject')) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->formLabel($form->get('message')) ?>
+            <div>
+                <?= $this->formElement($form->get('message')) ?>
+                <?= $this->formElementErrors($form->get('message')) ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <?= $this->formElement($form->get('submit')) ?>                   
+        </div>
+        <?= $this->form()->closeTag() ?>
+    </div>
+</div>

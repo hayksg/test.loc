@@ -44,7 +44,8 @@ class LoginController extends AbstractActionController
             
             if ($result->isValid()) {
                 $this->getAuthService($sm)->getStorage()->write($email);
-                return $this->redirect()->toRoute('home');
+                //return $this->redirect()->toRoute('home');
+                return $this->redirect()->toRoute('user/manage');
             } else {
                 $message = 'Incorrect Email Address or Password';
                 $error = false;

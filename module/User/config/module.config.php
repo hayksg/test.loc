@@ -75,8 +75,11 @@ return array(
                     ),
                     'chat' => array(
                         'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/chat',                          
+                        'options' => array(                           
+                            'route'    => '/chat[/:action]',
+                            'constraints' => array(
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',                            
+                            ),
                             'defaults' => array(
                                 '__NAMESPACE__' => 'User\Controller',
                                 'controller'    => 'GroupChat',
@@ -91,6 +94,9 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'user' => __DIR__ . '/../view',
+        ),
+        'template_map' => array(            
+            'layout/user' => __DIR__ . '/../view/layout/user-layout.phtml',           
         ),
     ),
     'module_config' => array(
